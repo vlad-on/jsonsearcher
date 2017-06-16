@@ -70,7 +70,7 @@ public class MainController {
     @RequestMapping(value = "/ajaxtest/{toSearch}", method = RequestMethod.GET)
     public @ResponseBody
     ModelAndView getTime(@PathVariable String toSearch, Model model) {
-//        initializeData();
+        initializeData();
 //        System.out.println("hi");
         //new list
         Set<ProgrammingLanguage> resultSet = new HashSet<>();
@@ -112,9 +112,13 @@ public class MainController {
     //slice toSearch on separate words and find matches in resultSet with each of the words,
     //then filter for matches with all words from toSearch
     private void addWordSwappedMatch(String toSearch, Set<ProgrammingLanguage> resultSet) {
+//        String toSearch1 = "Java SE Programmer I";
         //slice to separate words
+        String[] wordsToSearch = toSearch.split(" ");
         //find matches with each word
-
+        for (String theWord:wordsToSearch) {
+            System.out.println(theWord);
+        }
     }
 
     //if toSearch contains word scriprting - change it to script and use addWordSwappedMatch(...)

@@ -17,8 +17,10 @@
         });
         function retrievePrLanguages() {
             var url = '/ajaxtest';
-            if ($('#searchValue').val() != '') {
-                url = url + '/' + $('#searchValue').val();
+            value = $('#searchValue').val().trim();
+            if (value != '') {
+                value = encodeURIComponent(value)
+                url = url + '/' + value;
             }
 
             $("#resultsBlock").load(url);
@@ -29,7 +31,7 @@
 
 <body>
 <form>
-    <span class="subtitle">Guest list form</span>
+    <span class="subtitle">Search form</span>
     <div class="listBlock">
         <div class="search-block">
             <input type="text" id="searchValue" name="searchValue"/>
