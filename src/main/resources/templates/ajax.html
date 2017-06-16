@@ -1,0 +1,51 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+    <TITLE>Search programming language</TITLE>
+
+    <script type="text/javascript"
+    src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).keypress(function(e) {
+            if(e.which == 13) {
+                retrievePrLanguages();
+            }
+        });
+        function retrievePrLanguages() {
+            var url = '/ajaxtest';
+            if ($('#searchValue').val() != '') {
+                url = url + '/' + $('#searchValue').val();
+            }
+
+            $("#resultsBlock").load(url);
+        }
+    </script>
+
+</head>
+
+<body>
+<form>
+    <span class="subtitle">Guest list form</span>
+    <div class="listBlock">
+        <div class="search-block">
+            <input type="text" id="searchValue" name="searchValue"/>
+            <br />
+            <label for="searchValue" th:text="searchValue">Search label:</label>
+            <button id="searchButton" name="searchButton" onclick="retrievePrLanguages()" type="button"
+                    th:text="Search">Search button</button>
+        </div>
+    </div>
+</form>
+
+<!-- Results block -->
+<div align="center">
+    <div id="resultsBlock"></div>
+<br/>
+</div>
+
+</body>
+</html>
