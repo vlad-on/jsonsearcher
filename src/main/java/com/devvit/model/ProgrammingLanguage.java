@@ -38,15 +38,15 @@ public class ProgrammingLanguage {
                 "}";
     }
 
-    public boolean contains(Object obj) {
-        return getName().toLowerCase().contains(obj.toString().toLowerCase())
-                ||getType().toLowerCase().contains(obj.toString().toLowerCase())
-                ||getDesignedBy().toLowerCase().contains(obj.toString().toLowerCase());
+    public boolean contains(String str) {
+        return getName().toLowerCase().contains(str.toLowerCase())
+                ||getType().toLowerCase().contains(str.toLowerCase())
+                ||getDesignedBy().toLowerCase().contains(str.toLowerCase());
     }
 
     public boolean equals(ProgrammingLanguage plObj) {
-        return getName().equals(plObj.getName())
-                &&getType().equals(plObj.getType())
-                &&getDesignedBy().equals(plObj.getDesignedBy());
+        return getName().toLowerCase().contains(plObj.toString().toLowerCase())
+                ||getType().toLowerCase().contains(plObj.toString().toLowerCase())
+                ||getDesignedBy().toLowerCase().contains(plObj.toString().toLowerCase());
     }
 }

@@ -12,17 +12,17 @@
     <script type="text/javascript">
         $(document).keypress(function(e) {
             if(e.which == 13) {
+                e.preventDefault();
                 retrievePrLanguages();
             }
         });
         function retrievePrLanguages() {
-            var url = '/ajaxtest';
+            var url = '/ajax';
             value = $('#searchValue').val().trim();
             if (value != '') {
                 value = encodeURIComponent(value)
                 url = url + '/' + value;
             }
-
             $("#resultsBlock").load(url);
         }
     </script>
