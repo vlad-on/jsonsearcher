@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.HashSet;
+import java.util.LinkedHashSet ;
 import java.util.Set;
 
 /**
@@ -27,9 +27,9 @@ public class MainController {
     private Set<ProgrammingLanguage> prLangSet;
 
     private void initializeData() {
-        prLangSet = new HashSet<>();
+        prLangSet = new LinkedHashSet <>();
         JsonParser parser = new JsonParser();
-        JsonArray jsonPrLangList = null;
+        JsonArray jsonPrLangList;
         try {
             File file = new File("src/main/resources/data/data.json");
             jsonPrLangList = parser.parse(new FileReader(file)).getAsJsonArray();
@@ -72,7 +72,7 @@ public class MainController {
         initializeData();
 //        System.out.println("hi");
         //new list
-        Set<ProgrammingLanguage> resultSet = new HashSet<>();
+        Set<ProgrammingLanguage> resultSet = new LinkedHashSet <>();
         //find exact (and partial) values and add to the list
         addExactAndPartialMatch(toSearch, resultSet);
         //find values with words in toSearch (swapped)
@@ -80,7 +80,8 @@ public class MainController {
         //find related like Scripting=script
         addRelatedScriptingLanguages(toSearch, resultSet);
         //exclude values with "-..."
-        excludeValuesWithMinus(toSearch, resultSet);
+        String toIgnore="";
+        excludeValuesWithMinus(toIgnore, resultSet);
         //return the list (prettify)
 //        String result = "";
 //        for (ProgrammingLanguage elem:
@@ -115,8 +116,34 @@ public class MainController {
         //slice to separate words
         String[] wordsToSearch = toSearch.split(" ");
         //find matches with each word
+        //check if words >1
+        Set<ProgrammingLanguage> resultMatchByWordsSet = new LinkedHashSet<>();
+        if (wordsToSearch.length > 1) {
+            //initialize 2 new sets - we need them to compare results for each word and find only common for both sets
+            Set<ProgrammingLanguage> matchByWordsSet = new LinkedHashSet<>();
+            //adding matches set for first word
+            addExactAndPartialMatch(wordsToSearch[0],resultMatchByWordsSet);
+            //searches all matches for each word from toSearch string
+            for (int i=1; i<wordsToSearch.length; i++){
+                //pass to existing match method each word and adds to this new set
+                addExactAndPartialMatch(wordsToSearch[i],matchByWordsSet);
+                //this method removes all objects from resultMatchByWordsSet that are not in matchByWordsSet
+                //so it leaves in resultMatchByWordsSet only common objects with matchByWordsSet
+                resultMatchByWordsSet.retainAll(matchByWordsSet);
+            }
+        }
         for (String theWord:wordsToSearch) {
             System.out.println(theWord);
+        }
+        System.out.println("before add");
+        for (ProgrammingLanguage pl: resultSet) {
+            System.out.println(pl.getName());
+        }
+        resultSet.addAll(resultMatchByWordsSet);
+
+        System.out.println("after add");
+        for (ProgrammingLanguage pl: resultSet) {
+            System.out.println(pl.getName());
         }
     }
 
