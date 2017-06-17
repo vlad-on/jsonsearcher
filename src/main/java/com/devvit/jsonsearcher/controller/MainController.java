@@ -13,7 +13,6 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -101,8 +100,8 @@ public class MainController {
     //resultSet - Set where matched values to be added
     private void addExactAndPartialMatch(@PathVariable String toSearch, Set<ProgrammingLanguage> resultSet) {
         for (ProgrammingLanguage elem : prLangSet){
-            //System.out.println("elem.getName()="+elem.getName()+".equals(toSearch)="+toSearch+" is "+elem.equals(toSearch));
-            if (elem.equals(toSearch)){
+            //System.out.println("elem.getName()="+elem.getName()+".contains(toSearch)="+toSearch+" is "+elem.contains(toSearch));
+            if (elem.contains(toSearch)){
 //                System.out.println("added " + elem.getName());
                 resultSet.add(elem);
             }

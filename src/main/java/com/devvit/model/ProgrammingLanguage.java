@@ -38,10 +38,15 @@ public class ProgrammingLanguage {
                 "}";
     }
 
-    @Override
-    public boolean equals(Object obj) {
+    public boolean contains(Object obj) {
         return getName().toLowerCase().contains(obj.toString().toLowerCase())
                 ||getType().toLowerCase().contains(obj.toString().toLowerCase())
                 ||getDesignedBy().toLowerCase().contains(obj.toString().toLowerCase());
+    }
+
+    public boolean equals(ProgrammingLanguage plObj) {
+        return getName().equals(plObj.getName())
+                &&getType().equals(plObj.getType())
+                &&getDesignedBy().equals(plObj.getDesignedBy());
     }
 }
