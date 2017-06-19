@@ -46,7 +46,7 @@ public class ProgrammingLanguage {
 
     public boolean equals(ProgrammingLanguage plObj) {
         return getName().toLowerCase().contains(plObj.toString().toLowerCase())
-                ||getType().toLowerCase().contains(plObj.toString().toLowerCase())
-                ||getDesignedBy().toLowerCase().contains(plObj.toString().toLowerCase());
+                &&getType().toLowerCase().contains(plObj.toString().toLowerCase())
+                &&getDesignedBy().toLowerCase().contains(plObj.toString().toLowerCase());
     }
 }
