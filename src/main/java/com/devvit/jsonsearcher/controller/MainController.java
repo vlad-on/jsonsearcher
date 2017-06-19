@@ -12,9 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,28 +27,34 @@ public class MainController {
     private static Logger log = Logger.getLogger(MainController.class.getName());
 
     private static Set<ProgrammingLanguage> prLangSet;
+    private static boolean isDataInitialized;
 
     private static void initializeData() {
-        log.info("Started data initialization");
-        prLangSet = new LinkedHashSet <>();
-        JsonParser parser = new JsonParser();
-        JsonArray jsonPrLangList;
-        try {
-            File file = new File("src/main/resources/data/data.json");
-            jsonPrLangList = parser.parse(new FileReader(file)).getAsJsonArray();
+        if (!isDataInitialized) {
+            log.info("Started data initialization");
+            prLangSet = new LinkedHashSet<>();
+            JsonParser parser = new JsonParser();
+            JsonArray jsonPrLangList;
+            try {
+                File file = new File("src/main/resources/data/data.json");
+                jsonPrLangList = parser.parse(new FileReader(file)).getAsJsonArray();
 
-            for (JsonElement jsonPrLang : jsonPrLangList) {
-                JsonObject j = parser.parse(jsonPrLang.toString()).getAsJsonObject();
-                String name = j.get("Name").getAsString();
-                String type = j.get("Type").getAsString();
-                String designedBy = j.get("Designed by").getAsString();
-                ProgrammingLanguage prLang = new ProgrammingLanguage(name, type, designedBy);
-                prLangSet.add(prLang);
+                for (JsonElement jsonPrLang : jsonPrLangList) {
+                    JsonObject j = parser.parse(jsonPrLang.toString()).getAsJsonObject();
+                    String name = j.get("Name").getAsString();
+                    String type = j.get("Type").getAsString();
+                    String designedBy = j.get("Designed by").getAsString();
+                    ProgrammingLanguage prLang = new ProgrammingLanguage(name, type, designedBy);
+                    prLangSet.add(prLang);
+                }
+            } catch (FileNotFoundException e) {
+                log.log(Level.SEVERE, "Exception: ", e);
             }
-        } catch (FileNotFoundException e) {
-            log.log(Level.SEVERE, "Exception: ", e);
+            isDataInitialized = true;
+            log.fine("Data successfully initialized");
+        } else {
+            log.info("Data already initialized");
         }
-        log.fine("Data successfully initialized");
     }
 
     @RequestMapping
@@ -63,13 +67,13 @@ public class MainController {
     @RequestMapping(value = "/ajax/{inputToSearch}", method = RequestMethod.GET)
     public @ResponseBody
     ModelAndView getProgLangSearch(@PathVariable String inputToSearch) {
+        initializeData();
         log.info("entered getProgLangSearch() by /ajax/" + inputToSearch + " mapping");
-        //initializeData(); // should be at the start of program
         String toSearch = "";
         String toIgnore = "";
         String[] s = inputToSearch.split(" ");
         for (String word: s) {
-            if (word.length()>1) {
+            if (word.length()>0) {
                 if (word.substring(0, 1).equals("-")) {
                     toIgnore = toIgnore + word.substring(1, word.length()) + " ";
                 } else {
@@ -80,9 +84,9 @@ public class MainController {
         //remove last " "
         toSearch = toSearch.trim();
         toIgnore = toIgnore.trim();
-
         log.info("Values to search = "+toSearch);
         log.info("Values to ignore = "+toIgnore);
+
         //new list
         Set<ProgrammingLanguage> resultSet = new LinkedHashSet <>();
         //find exact (and partial) values and add to the list
@@ -93,10 +97,31 @@ public class MainController {
         addRelatedScriptingLanguages(toSearch, resultSet);
         //exclude values with "-..."
         excludeValuesWithMinus(toIgnore, resultSet);
-        //return the list (prettify)
-        //sort by relevance
+        //return the list:
+        boolean isSortByRelevance = true;
+        //sort by relevance or else by PL name (as it was in the file)
+        if (isSortByRelevance){
+            List<ProgrammingLanguage> sortedResultList = new ArrayList<>(resultSet);
+            sortByRelevance(toSearch, sortedResultList);
+//            resultSet.sort(new Comparator() {
+//                public int compare(Object o1, Object o2) {
+//                    return -1;
+//                    // it can also return 0, and 1
+//                }});
+            return new ModelAndView("searchresult","prLanguages",sortedResultList);
+            }else {
+            return new ModelAndView("searchresult", "prLanguages", resultSet);
+        }
+    }
 
-        return new ModelAndView("searchresult", "prLanguages", resultSet);
+    private void sortByRelevance(String toSearch, List<ProgrammingLanguage> sortedResultList) {
+        log.info("Entered sortByRelevance with for word(s):"+toSearch);
+        Collections.sort(sortedResultList, (a, b) -> a.countWordOccurences(toSearch) > b.countWordOccurences(toSearch) ? -1 :
+                a.countWordOccurences(toSearch) == b.countWordOccurences(toSearch) ? 0 : 1);
+
+        log.fine("Tree set created and sorted");
+        //there should more optimal way...
+        log.fine("Set sorted by word relevance created");
     }
 
     //toSearch - value to be match with,
@@ -158,15 +183,15 @@ public class MainController {
         log.info("Entered addRelatedScriptingLanguages for word(s): " + toSearch);
         if (toSearch.toLowerCase().contains("scripting")) {
             String replacedSearch = toSearch.replace("scripting","script");
-            log.info("Replaced Scripting to script");
+            log.info("Replaced scripting to script");
             addWordSwappedMatch(replacedSearch, resultSet);
         } else {
-            log.info("No word Scripting found, no new results added");
+            log.info("Word scripting not found, no new results added");
         }
     }
 
     //if toSearch contains words staring with "-" exclude them from resultSet
-    //might be not optimal
+    //might be not optimal because of forming of another Set for ignored values
     private void excludeValuesWithMinus(String toIgnore, Set<ProgrammingLanguage> resultSet) {
         log.info("Entered excludeValuesWithMinus for word(s): " + toIgnore);
         if (toIgnore.length()>0) {
