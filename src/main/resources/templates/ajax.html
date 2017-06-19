@@ -19,9 +19,10 @@
         function retrievePrLanguages() {
             var url = '/ajax';
             value = $('#searchValue').val().trim();
-            if (value != '') {
+            pageNumber = $('#pageNumber').val().trim();
+            if (!(value === '' || pageNumber === '')) {
                 value = encodeURIComponent(value)
-                url = url + '/' + value;
+                url = url + '/' + value + '?pageNumber='+pageNumber;
             }
             $("#resultsBlock").load(url);
         }
@@ -39,6 +40,8 @@
             <label for="searchValue" th:text="searchValue">Search label:</label>
             <button id="searchButton" name="searchButton" onclick="retrievePrLanguages()" type="button"
                     th:text="Search">Search button</button>
+            <input type="text" id="pageNumber" name="pageNumber"/>
+
         </div>
     </div>
 </form>

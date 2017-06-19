@@ -1,5 +1,6 @@
 package com.devvit.jsonsearcher.controller;
 
+import com.devvit.model.Model;
 import com.devvit.model.ProgrammingLanguage;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -66,7 +67,10 @@ public class MainController {
 
     @RequestMapping(value = "/ajax/{inputToSearch}", method = RequestMethod.GET)
     public @ResponseBody
-    ModelAndView getProgLangSearch(@PathVariable String inputToSearch) {
+    ModelAndView getProgLangSearch(@PathVariable String inputToSearch,
+                                   @RequestParam(required = false, defaultValue = "1") Integer pageNumber,
+                                   @RequestParam(required = false, defaultValue = "5") Integer pageSize,
+                                   @RequestParam(required = false) String sortBy) {
         initializeData();
         log.info("entered getProgLangSearch() by /ajax/" + inputToSearch + " mapping");
         String toSearch = "";
@@ -97,6 +101,8 @@ public class MainController {
         addRelatedScriptingLanguages(toSearch, resultSet);
         //exclude values with "-..."
         excludeValuesWithMinus(toIgnore, resultSet);
+
+        int pageCount = (int) Math.ceil(1.0 * resultSet.size() / pageSize);
         //return the list:
         boolean isSortByRelevance = true;
         //sort by relevance or else by PL name (as it was in the file)
@@ -108,7 +114,11 @@ public class MainController {
 //                    return -1;
 //                    // it can also return 0, and 1
 //                }});
-            return new ModelAndView("searchresult","prLanguages",sortedResultList);
+            Model model = new Model();
+            model.setResultCollection(sortedResultList);
+            model.setPageNumber(pageNumber);
+            model.setPageCount(pageCount);
+            return new ModelAndView("searchresult","prLanguages",model);
             }else {
             return new ModelAndView("searchresult", "prLanguages", resultSet);
         }

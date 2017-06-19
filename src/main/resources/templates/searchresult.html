@@ -8,7 +8,7 @@
 </head>
 <body>
 <h2>Search results:</h2>
-<div th:fragment="resultsList" th:unless="${#lists.isEmpty(prLanguages)}" class="results-block">
+<div th:fragment="resultsList" th:unless="${#lists.isEmpty(prLanguages.resultCollection)}" class="results-block">
     <table width="100%" border="1">
         <thead>
         <tr>
@@ -18,12 +18,19 @@
         </tr>
         </thead>
 
-        <tr th:each="prLang : ${prLanguages}">
+        <tr th:each="prLang : ${prLanguages.resultCollection}">
             <td th:text="${prLang.name}">name</td>
             <td th:text="${prLang.designedBy}">designedBy</td>
             <td th:text="${prLang.type}">type</td>
         </tr>
     </table>
+</div>
+
+<div>
+    <p th:text="${prLanguages.pageNumber}">Welcome to our grocery store!</p>
+    <p th:text="${prLanguages.pageCount}">Welcome to our grocery store!</p>
+    Page Number: ${prLanguages.pageNumber}
+    Total Pages: ${prLanguages.pageCount}
 </div>
 
 </body>
