@@ -5,7 +5,7 @@ import java.util.Collection;
 /**
  * Created by vaveryanov on 19.06.2017.
  */
-public class Model {
+public class UIModel {
     private Collection<ProgrammingLanguage> resultCollection;
     private int pageCount;
     private int pageNumber;
