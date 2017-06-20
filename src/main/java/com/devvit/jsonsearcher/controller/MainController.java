@@ -1,6 +1,6 @@
 package com.devvit.jsonsearcher.controller;
 
-import com.devvit.model.Model;
+import com.devvit.model.UIModel;
 import com.devvit.model.ProgrammingLanguage;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -102,7 +102,7 @@ public class MainController {
         //exclude values with "-..."
         excludeValuesWithMinus(toIgnore, resultSet);
 
-        int pagesTotal = (int) Math.ceil(1.0 * resultSet.size() / pageSize);
+        int pageCount = (int) Math.ceil(1.0 * resultSet.size() / pageSize);
         //return the list:
         boolean isSortByRelevance = true;
         //sort by relevance or else by PL name (as it was in the file)
@@ -114,11 +114,11 @@ public class MainController {
 //                    return -1;
 //                    // it can also return 0, and 1
 //                }});
-            Model model = new Model();
-            model.setResultCollection(sortedResultList);
-            model.setPageNumber(pageNumber);
-            model.setPagesTotal(pagesTotal);
-            return new ModelAndView("searchresult","prLanguages", model);
+            UIModel uiModel = new UIModel();
+            uiModel.setResultCollection(sortedResultList);
+            uiModel.setPageNumber(pageNumber);
+            uiModel.setPageCount(pageCount);
+            return new ModelAndView("searchresult","prLanguages", uiModel);
             }else {
             return new ModelAndView("searchresult", "prLanguages", resultSet);
         }
@@ -128,10 +128,7 @@ public class MainController {
         log.info("Entered sortByRelevance with for word(s):"+toSearch);
         Collections.sort(sortedResultList, (a, b) -> a.countWordOccurences(toSearch) > b.countWordOccurences(toSearch) ? -1 :
                 a.countWordOccurences(toSearch) == b.countWordOccurences(toSearch) ? 0 : 1);
-
-        log.fine("Tree set created and sorted");
-        //there should more optimal way...
-        log.fine("Set sorted by word relevance created");
+        log.fine("List sorted by word relevance");
     }
 
     //toSearch - value to be match with,

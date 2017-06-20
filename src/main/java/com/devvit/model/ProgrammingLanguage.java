@@ -58,7 +58,7 @@ public class ProgrammingLanguage {
                 &&getDesignedBy().toLowerCase().contains(plObj.toString().toLowerCase());
     }
 
-    public int countWordOccurences(String str) {
+    public int countWordOccurrences(String str) {
         String fullPL = this.toString().toLowerCase();
 //        log.info("fullPL="+fullPL);
         int occur = 0;
