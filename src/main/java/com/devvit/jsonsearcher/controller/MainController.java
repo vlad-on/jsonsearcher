@@ -102,7 +102,7 @@ public class MainController {
         //exclude values with "-..."
         excludeValuesWithMinus(toIgnore, resultSet);
 
-        int pageCount = (int) Math.ceil(1.0 * resultSet.size() / pageSize);
+        int pagesTotal = (int) Math.ceil(1.0 * resultSet.size() / pageSize);
         //return the list:
         boolean isSortByRelevance = true;
         //sort by relevance or else by PL name (as it was in the file)
@@ -117,8 +117,8 @@ public class MainController {
             Model model = new Model();
             model.setResultCollection(sortedResultList);
             model.setPageNumber(pageNumber);
-            model.setPageCount(pageCount);
-            return new ModelAndView("searchresult","prLanguages",model);
+            model.setPagesTotal(pagesTotal);
+            return new ModelAndView("searchresult","prLanguages", model);
             }else {
             return new ModelAndView("searchresult", "prLanguages", resultSet);
         }

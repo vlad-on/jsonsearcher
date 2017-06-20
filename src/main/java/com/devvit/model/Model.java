@@ -7,7 +7,7 @@ import java.util.Collection;
  */
 public class Model {
     private Collection<ProgrammingLanguage> resultCollection;
-    private int pageCount;
+    private int pagesTotal;
     private int pageNumber;
 
     public Collection<ProgrammingLanguage> getResultCollection() {
@@ -18,12 +18,12 @@ public class Model {
         this.resultCollection = resultCollection;
     }
 
-    public int getPageCount() {
-        return pageCount;
+    public int getPagesTotal() {
+        return pagesTotal;
     }
 
-    public void setPageCount(int pageCount) {
-        this.pageCount = pageCount;
+    public void setPagesTotal(int pagesTotal) {
+        this.pagesTotal = pagesTotal;
     }
 
     public int getPageNumber() {

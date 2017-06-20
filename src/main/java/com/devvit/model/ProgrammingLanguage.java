@@ -60,15 +60,15 @@ public class ProgrammingLanguage {
 
     public int countWordOccurences(String str) {
         String fullPL = this.toString().toLowerCase();
-        log.info("fullPL="+fullPL);
+//        log.info("fullPL="+fullPL);
         int occur = 0;
         String[] s = str.split(" ");
         for (String word: s) {
-            log.info("word="+word);
+//            log.info("word="+word);
             occur = occur + StringUtils.countOccurrencesOf(fullPL,word.toLowerCase());
-            log.info("StringUtils.countOccurrencesOf(fullPL,"+word+")="+occur);
+//            log.info("StringUtils.countOccurrencesOf(fullPL,"+word+")="+occur);
         }
-        log.info("occur ="+occur);
+        log.info("for "+ getName() + " occur ="+occur);
         return occur;
     }
 }

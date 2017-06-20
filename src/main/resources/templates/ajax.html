@@ -1,28 +1,55 @@
-<html xmlns="http://www.w3.org/1999/xhtml"
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content="Json searcher using bootstrap"/>
+    <meta name="author" content="Vladyslav Averyanov"/>
 
     <TITLE>Search programming language</TITLE>
 
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    <link href="css/1-col-portfolio.css" rel="stylesheet"/>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
     <script type="text/javascript"
-    src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+            src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
     <script type="text/javascript">
-        $(document).keypress(function(e) {
-            if(e.which == 13) {
+        $(document).keypress(function (e) {
+            if (e.which == 13) {
                 e.preventDefault();
                 retrievePrLanguages();
             }
         });
         function retrievePrLanguages() {
             var url = '/ajax';
-            value = $('#searchValue').val().trim();
-            pageNumber = $('#pageNumber').val().trim();
-            if (!(value === '' || pageNumber === '')) {
-                value = encodeURIComponent(value)
-                url = url + '/' + value + '?pageNumber='+pageNumber;
+            var value = $('#searchValue').val().trim();
+            var pageNumber = '';//$('#pageNumber').val().trim();
+            var pageSize = '';//$('#pageSize').val().trim();
+            if (value != '') {
+                value = encodeURIComponent(value);
+                var uriParams = '';
+                if (pageNumber != '') {
+                    uriParams = uriParams + 'pageNumber=' + pageNumber;
+                }
+                if (pageSize != '') {
+                    uriParams = uriParams + 'pageSize=' + pageSize;
+                }
+                url = url + '/' + value + '?' + uriParams;
             }
             $("#resultsBlock").load(url);
         }
@@ -31,26 +58,98 @@
 </head>
 
 <body>
-<form>
-    <span class="subtitle">Search form</span>
-    <div class="listBlock">
-        <div class="search-block">
-            <input type="text" id="searchValue" name="searchValue"/>
-            <br />
-            <label for="searchValue" th:text="searchValue">Search label:</label>
-            <button id="searchButton" name="searchButton" onclick="retrievePrLanguages()" type="button"
-                    th:text="Search">Search button</button>
-            <input type="text" id="pageNumber" name="pageNumber"/>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">PL Searcher</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="#">About</a>
+                </li>
+                <li>
+                    <a href="#">Services</a>
+                </li>
+                <li>
+                    <a href="#">Contact</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
 
+<!-- Page Content -->
+<div class="container">
+
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Search your
+                <small>Programming Language</small>
+            </h1>
         </div>
     </div>
-</form>
-
-<!-- Results block -->
-<div align="center">
-    <div id="resultsBlock"></div>
-<br/>
+    <div class="row">
+        <div class="col-lg-12">
+            Sort by:
+            Results per page:
+        </div>
+    </div>
+    <hr/>
+    <!-- /.row -->
+    <form class="form-group">
+        <!--<span class="subtitle">Search form</span>-->
+        <div class="listBlock">
+            <div class="search-block">
+                <div class="col-md-8">
+                    <input type="text" id="searchValue" name="searchValue" class="form-control"/>
+                </div>
+                <div class="col-md-4">
+                    <a class="btn btn-primary" id="searchButton" name="searchButton" onclick="retrievePrLanguages()">Search</a>
+                </div>
+                <!--<br/>-->
+                <!--<input type="text" id="pageNumber" name="pageNumber"/>-->
+            </div>
+        </div>
+    </form>
 </div>
 
+<!-- Page Content -->
+<div class="container">
+
+    <!-- Results block -->
+    <div id="resultsBlock"></div>
+    <br/>
+
+    <!-- Footer -->
+    <footer>
+        <div class="row">
+            <div class="col-lg-12">
+                <p>Copyright &copy; Vladyslav Averyanov 2017</p>
+            </div>
+        </div>
+        <!-- /.row -->
+    </footer>
+</div>
+<!-- /.container -->
+
+<!-- jQuery -->
+<script src="js/jquery.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="js/bootstrap.min.js"></script>
 </body>
 </html>

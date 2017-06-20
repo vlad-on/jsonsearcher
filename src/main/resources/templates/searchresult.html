@@ -9,29 +9,74 @@
 <body>
 <h2>Search results:</h2>
 <div th:fragment="resultsList" th:unless="${#lists.isEmpty(prLanguages.resultCollection)}" class="results-block">
-    <table width="100%" border="1">
-        <thead>
-        <tr>
-        <td th:text="Name">Name</td>
-        <td th:text="DesignedBy">Designed By</td>
-        <td th:text="Type">Type</td>
-        </tr>
-        </thead>
+    <table>
+        <!--<thead>-->
+        <!--<tr>-->
+        <!--<td th:text="Name">Name</td>-->
+        <!--<td th:text="DesignedBy">Designed By</td>-->
+        <!--<td th:text="Type">Type</td>-->
+        <!--</tr>-->
+        <!--</thead>-->
 
+        <!--<tr th:each="prLang : ${prLanguages.resultCollection}">-->
+        <!--<td th:text="${prLang.name}">name</td>-->
+        <!--<td th:text="${prLang.designedBy}">designedBy</td>-->
+        <!--<td th:text="${prLang.type}">type</td>-->
+        <!--</tr>-->
         <tr th:each="prLang : ${prLanguages.resultCollection}">
-            <td th:text="${prLang.name}">name</td>
-            <td th:text="${prLang.designedBy}">designedBy</td>
-            <td th:text="${prLang.type}">type</td>
+            <td>
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <h3 th:text="${prLang.name}" class="text-primary">name</h3>
+                        <h4 th:text="${prLang.designedBy}" class="text-info">designedBy</h4>
+                        <p th:text="${prLang.type}">type</p>
+                    </div>
+                </div>
+            </td>
         </tr>
+        <hr/>
     </table>
+
 </div>
 
-<div>
-    <p th:text="${prLanguages.pageNumber}">Welcome to our grocery store!</p>
-    <p th:text="${prLanguages.pageCount}">Welcome to our grocery store!</p>
-    Page Number: ${prLanguages.pageNumber}
-    Total Pages: ${prLanguages.pageCount}
-</div>
+<!--<div>-->
+    <!--Page Number: ${prLanguages.pageNumber} <p th:text="${prLanguages.pageNumber}">Welcome to our grocery store!</p>-->
+    <!--Total Pages: ${prLanguages.pagesTotal} <p th:text="${prLanguages.pagesTotal}">Welcome to our grocery store!</p>-->
+<!--</div>-->
 
+<!--&lt;!&ndash; Project Five &ndash;&gt;-->
+<!--<div class="row">-->
+<!--<div class="col-lg-12">-->
+<!--<h3>Project Five</h3>-->
+<!--<h4>Subheading</h4>-->
+<!--<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, quo, minima, inventore voluptatum saepe-->
+<!--quos nostrum provident ex quisquam hic odio repellendus atque porro distinctio quae id laboriosam facilis-->
+<!--dolorum.</p>-->
+<!--</div>-->
+<!--</div>-->
+<!--&lt;!&ndash; /.row &ndash;&gt;-->
+
+<hr/>
+<!-- Pagination -->
+<div class="row text-center">
+    <div class="col-lg-12">
+        <ul class="pagination">
+            <li>
+                <a href="#">&laquo;</a>
+            </li>
+            <li th:each="i : ${#numbers.sequence(1, prLanguages.pagesTotal)}"
+                class="" th:classappend="${prLanguages.pageNumber == i}  ? active : ''">
+                <a href="#" th:text="${i}"></a>
+            </li>
+            <li>
+                <a href="#">&raquo;</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- /.row -->
+
+<hr/>
 </body>
 </html>
