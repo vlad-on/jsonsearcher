@@ -22,8 +22,8 @@ public class SearchEngineService {
 
     private void sortByRelevance(String toSearch, List<ProgrammingLanguage> sortedResultList) {
         log.info("Entered sortByRelevance with for word(s):" + toSearch);
-        //might use tree set
-        Collections.sort(sortedResultList, (a, b) -> a.countWordOccurrences(toSearch) > b.countWordOccurrences(toSearch) ? -1 :
+        //might use tree set?
+        sortedResultList.sort((a, b) -> a.countWordOccurrences(toSearch) > b.countWordOccurrences(toSearch) ? -1 :
                 a.countWordOccurrences(toSearch) == b.countWordOccurrences(toSearch) ? 0 : 1);
         log.fine("List sorted by word relevance");
     }
@@ -96,8 +96,8 @@ public class SearchEngineService {
             log.info("there are words to exclude");
             //get all results for each such word to new HashSet
             Set<ProgrammingLanguage> plSetToIgnore = new HashSet<>();
-            for (int i = 0; i < wordsToIgnore.length; i++) {
-                addExactAndPartialMatch(wordsToIgnore[i], plSetToIgnore, fullPrLangSet);
+            for (String aWordsToIgnore : wordsToIgnore) {
+                addExactAndPartialMatch(aWordsToIgnore, plSetToIgnore, fullPrLangSet);
             }
             //delete results with such words from resultSet
             resultSet.removeAll(plSetToIgnore);

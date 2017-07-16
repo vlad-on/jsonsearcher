@@ -5,8 +5,10 @@ import org.springframework.util.StringUtils;
 
 import java.util.logging.Logger;
 
+import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
+
 /**
- * Created by Vlad on 12.06.2017.
+ * Stores info about one Programming Language from the file
  */
 public class ProgrammingLanguage {
 
@@ -47,15 +49,12 @@ public class ProgrammingLanguage {
     }
 
     public boolean contains(String str) {
-        return getName().toLowerCase().contains(str.toLowerCase())
-                ||getType().toLowerCase().contains(str.toLowerCase())
-                ||getDesignedBy().toLowerCase().contains(str.toLowerCase());
-    }
-
-    public boolean equals(ProgrammingLanguage plObj) {
-        return getName().toLowerCase().contains(plObj.toString().toLowerCase())
-                &&getType().toLowerCase().contains(plObj.toString().toLowerCase())
-                &&getDesignedBy().toLowerCase().contains(plObj.toString().toLowerCase());
+//        return getName().toLowerCase().contains(str.toLowerCase())
+//                || getType().toLowerCase().contains(str.toLowerCase())
+//                || getDesignedBy().toLowerCase().contains(str.toLowerCase());
+        return containsIgnoreCase(getName(), str)
+                || containsIgnoreCase(getType(), str)
+                || containsIgnoreCase(getDesignedBy(), str);
     }
 
     public int countWordOccurrences(String str) {
@@ -68,7 +67,7 @@ public class ProgrammingLanguage {
             occur = occur + StringUtils.countOccurrencesOf(fullPL,word.toLowerCase());
 //            log.info("StringUtils.countOccurrencesOf(fullPL,"+word+")="+occur);
         }
-        log.info("for "+ getName() + " occur ="+occur);
+        log.info("for lang "+ getName() + " number occurrences = "+occur);
         return occur;
     }
 }

@@ -10,7 +10,8 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 /**
- * Created by Vlad on 16.07.2017.
+ * Is a layer between Controller and Repository classes
+ * Contains logic and order of methods to call to get the info asked by Controller
  */
 @Service
 public class MainService {
@@ -51,8 +52,13 @@ public class MainService {
         //exclude values with "-..."
         searchEngineService.excludeValuesWithMinus(toIgnore, resultSet, fullPrLangSet);
         //sort by relevance if sortBy=1
-        if (sortBy==1) {
-            searchEngineService.getRelevanceSortedResultList(toSearch, resultSet);
+        switch (sortBy) {
+            case 0:
+                //already sorted by name in file
+                break;
+            case 1:
+                searchEngineService.getRelevanceSortedResultList(toSearch, resultSet);
+                break;
         }
         return resultSet;
     }

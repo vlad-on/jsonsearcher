@@ -17,7 +17,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Created by Vlad on 16.07.2017.
+ * Representative of database access class with possible CRUD or more complicated methods
+ * Currently it accesses file data.json in resource repository and binds all data in it into Set of ProgrammingLanguage instances
  */
 @Repository
 //@PropertySource("application.properties")
