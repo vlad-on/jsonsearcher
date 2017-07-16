@@ -1,9 +1,9 @@
 package com.devvit.jsonsearcher.controller;
 
+import com.devvit.jsonsearcher.service.MainService;
 import com.devvit.jsonsearcher.service.SearchEngineService;
 import com.devvit.model.ProgrammingLanguage;
 import com.devvit.model.UIModel;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -15,17 +15,16 @@ import java.util.logging.Logger;
  */
 @RestController
 @RequestMapping("/")
-@PropertySource("application.properties")
 public class MainController {
 
     private static Logger log = Logger.getLogger(MainController.class.getName());
 
-    private SearchEngineService searchEngineService = new SearchEngineService();
+    private MainService mainService = new MainService();
 
     @RequestMapping
     public ModelAndView homePage() {
         log.info("entered homePage() by / mapping");
-        SearchEngineService.initializeData();
+        mainService.getFullPrLangSet(); //for initialization only :)
         return new ModelAndView("ajax", "message", "Spring MVC with Ajax and JQuery ");
     }
 
@@ -41,7 +40,7 @@ public class MainController {
         boolean isSortByRelevance = true; //TODO implement search filter
         //sort by relevance
         if (isSortByRelevance) {
-            Set<ProgrammingLanguage> resultSet = searchEngineService.getResultSet(inputToSearch, 1);
+            Set<ProgrammingLanguage> resultSet = mainService.getResultSet(inputToSearch, 1);
             int pageCount = (int) Math.ceil(1.0 * resultSet.size() / pageSize);
             UIModel uiModel = new UIModel();
             uiModel.setPageNumber(pageNumber);
@@ -50,7 +49,7 @@ public class MainController {
             return new ModelAndView("searchresult", "prLanguages", uiModel);
         } else {
             //sort by PL name (as it was in the file)
-            Set<ProgrammingLanguage> resultSet = searchEngineService.getResultSet(inputToSearch, 0);
+            Set<ProgrammingLanguage> resultSet = mainService.getResultSet(inputToSearch, 0);
             return new ModelAndView("searchresult", "prLanguages", resultSet);
         }
     }
