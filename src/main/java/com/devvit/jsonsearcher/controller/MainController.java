@@ -22,7 +22,7 @@ public class MainController {
 
     @RequestMapping
     public ModelAndView homePage() {
-        log.info("entered homePage() by / mapping");
+        log.info("Entered homePage() by / mapping");
         mainService.getFullPrLangSet(); //for initialization only :)
         return new ModelAndView("ajax", "message", "Spring MVC with Ajax and JQuery ");
     }
@@ -32,9 +32,8 @@ public class MainController {
     ModelAndView getProgLangSearch(@PathVariable String inputToSearch,
                                    @RequestParam(required = false, defaultValue = "1") Integer pageNumber,
                                    @RequestParam(required = false, defaultValue = "5") Integer pageSize,
-                                   @RequestParam(required = false) int sortBy) {
-        log.info("entered getProgLangSearch() by /ajax/" + inputToSearch + " mapping");
-        //sort by relevance
+                                   @RequestParam(required = false, defaultValue = "1") Integer sortBy) {
+        log.info("Entered getProgLangSearch() by /ajax/" + inputToSearch + " mapping");
         Set<ProgrammingLanguage> resultSet = mainService.getResultSet(inputToSearch, sortBy);
         int pageCount = (int) Math.ceil(1.0 * resultSet.size() / pageSize);
         UIModel uiModel = new UIModel();
