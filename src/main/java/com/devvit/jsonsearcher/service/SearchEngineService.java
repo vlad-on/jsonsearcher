@@ -3,7 +3,6 @@ package com.devvit.jsonsearcher.service;
 import com.devvit.jsonsearcher.controller.MainController;
 import com.devvit.model.ProgrammingLanguage;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -30,7 +29,7 @@ public class SearchEngineService {
 
     //toSearch - value to be match with,
     //resultSet - Set where matched values to be added
-    public void addExactAndPartialMatch(@PathVariable String toSearch, Set<ProgrammingLanguage> resultSet, Set<ProgrammingLanguage> fullPrLangSet) {
+    public void addExactAndPartialMatch(String toSearch, Set<ProgrammingLanguage> resultSet, Set<ProgrammingLanguage> fullPrLangSet) {
         log.info("Entered addExactAndPartialMatch() for word(s): " + toSearch);
         for (ProgrammingLanguage elem : fullPrLangSet) {
             if (elem.contains(toSearch)) {
