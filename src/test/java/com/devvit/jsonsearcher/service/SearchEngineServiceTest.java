@@ -137,7 +137,7 @@ public class SearchEngineServiceTest {
     public void getSortedResultListVerifyRelatedSortCallTest() throws Exception {
 //        should test private methods
 //        SearchEngineService mockObject = PowerMock.createPartialMock(SearchEngineService.class, "sortByRelevance");
-        int sortBy = 1;
+        int sortBy = 0;
         ses.getSortedResultList(toSearch, resultSet, sortBy);
         assertTrue(resultSet.isEmpty());
 //        PowerMock.expectPrivate(mockObject, "sortByRelevance", toSearch, new ArrayList<>());
@@ -145,7 +145,7 @@ public class SearchEngineServiceTest {
 
     @Test
     public void getSortedResultListVerifyRelatedSortTest() throws Exception {
-        int sortBy = 1;
+        int sortBy = 0;
         toSearch = "Microsoft";
         ses.addExactMatch(toSearch,resultSet,fullPrLangSet);
         ses.getSortedResultList(toSearch, resultSet, sortBy);
@@ -159,14 +159,14 @@ public class SearchEngineServiceTest {
 
     @Test
     public void getSortedResultListVerifyNameSortCallTest() throws Exception {
-        int sortBy = 0;
+        int sortBy = 1;
         ses.getSortedResultList(toSearch, resultSet, sortBy);
         assertTrue(resultSet.isEmpty());
     }
 
     @Test
     public void getSortedResultListVerifyNameSortTest() throws Exception {
-        int sortBy = 0;
+        int sortBy = 1;
         toSearch = "Microsoft";
         ses.addExactMatch(toSearch,resultSet,fullPrLangSet);
         ses.getSortedResultList(toSearch, resultSet, sortBy);

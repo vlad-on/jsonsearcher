@@ -37,6 +37,10 @@ public class MainServiceTest {
         ms.setSearchAndIgnoreValues(userInput);
         String toSearchMock = Whitebox.getInternalState(ms, "toSearch");
         assertTrue(toSearchMock.equals("Java Compile set"));
+        userInput = "Java%20Compile%20set%20-%20-Script";
+        ms.setSearchAndIgnoreValues(userInput);
+        toSearchMock = Whitebox.getInternalState(ms, "toSearch");
+        assertTrue(toSearchMock.equals("Java Compile set"));
     }
 
     @Test
@@ -51,6 +55,10 @@ public class MainServiceTest {
         userInput = "Java Compile set - -Script";
         ms.setSearchAndIgnoreValues(userInput);
         String toIgnoreMock = Whitebox.getInternalState(ms, "toIgnore");
+        assertTrue(toIgnoreMock.equals("Script"));
+        userInput = "Java%20Compile%20set%20-%20-Script";
+        ms.setSearchAndIgnoreValues(userInput);
+        toIgnoreMock = Whitebox.getInternalState(ms, "toIgnore");
         assertTrue(toIgnoreMock.equals("Script"));
     }
 

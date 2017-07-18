@@ -29,8 +29,9 @@
             src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 
     <script type="text/javascript">
-        var pageNumber = '';
-        var pageSize = '';
+        var pageNumber = 1;
+        var pageSize = 0;
+        var sortBy = 0;
         var value = '';
         $(document).keypress(function (e) {
             if (e.which == 13) {
@@ -38,45 +39,83 @@
                 searchClick();
             }
         });
+
         function searchClick() {
             pageNumber = 1;
-            value = $('#searchValue').val().trim();
             retrievePrLanguages();
         }
+
         function retrievePrLanguages() {
             var url = '/ajax';
+            value = $('#searchValue').val().trim();
             if (value != '') {
                 value = encodeURIComponent(value);
                 var uriParams = '';
                 if (pageNumber != '') {
-                    uriParams = uriParams + 'pageNumber=' + pageNumber;
+                    uriParams = appendUriParam(uriParams, 'pageNumber=' + pageNumber);
                 }
                 if (pageSize != '') {
-                    uriParams = uriParams + 'pageSize=' + pageSize;
+                    uriParams = appendUriParam(uriParams, 'pageSize=' + pageSize);
+                }
+                if (sortBy != '') {
+                    uriParams = appendUriParam(uriParams, 'sortBy=' + sortBy);
                 }
                 url = url + '/' + value + '?' + uriParams;
             }
             $("#resultsBlock").load(url);
         }
+
+        function appendUriParam(uriParams, param) {
+            if (uriParams != ''){
+                return uriParams = uriParams + '\u0026' + param;
+            } else {
+                return uriParams = uriParams + param;
+            }
+        }
+
         function getPreviousPage(pNum) {
-            alert("getPreviousPage called for page " + pNum);
+//            alert("getPreviousPage called for page " + pNum);
             pNum = pNum - 1;
             if (pNum >= 1) {
                 selectPage(pNum);
             }
 //            var pageSize = $('#pageSize').val().trim();
         }
+
         function selectPage(pNum) {
 //            pageNumber = $('#pageNumber').val().trim();
-            alert("page called " + pNum);
+//            alert("page called " + pNum);
             pageNumber = pNum;
+            retrievePrLanguages();
         }
+
         function getNextPage(pNum, pTotal) {
-            alert("getNextPage called for page" + pNum);
+//            alert("getNextPage called for page" + pNum);
             pNum = pNum + 1;
             if (!(pNum > parseInt(pTotal))) {
                 selectPage(pNum);
             }
+        }
+
+        function setSortBy(){
+            var select = document.getElementById("sortBy");
+//            alert("select.selectedIndex "+select.selectedIndex);
+            sortBy = select.selectedIndex;
+            searchClick();
+        }
+
+        function resPerPage() {
+            var select = document.getElementById("resPerPage");
+            pageSize = select.options[select.selectedIndex].value;
+            if (pageSize == "All"){
+                pageSize = 0;
+            }
+//            alert('pageSize='+pageSize);
+            searchClick();
+        }
+
+        function onChangeInput() {
+            searchClick();
         }
     </script>
 </head>
@@ -128,12 +167,12 @@
     </div>
     <div class="row">
         <div class="col-lg-12">
-            Sort by: <select class="selectpicker text-primary">
+            Sort by:  <select id="sortBy" class="selectpicker text-primary" th:onchange="'setSortBy()'">
             <option>Relevance</option>
             <option>Name</option>
         </select>
 
-            &nbsp;&nbsp;Results per page: <select class="selectpicker text-primary">
+            &nbsp;&nbsp;Results per page: <select id="resPerPage" class="selectpicker text-primary" th:onchange="'resPerPage()'">
             <option>All</option>
             <option>5</option>
             <option>10</option>
@@ -147,7 +186,7 @@
         <div class="listBlock">
             <div class="search-block">
                 <div class="col-md-8">
-                    <input type="text" id="searchValue" name="searchValue" class="form-control"/>
+                    <input type="text" id="searchValue" name="searchValue" class="form-control" th:oninput="'onChangeInput()'"/>
                 </div>
                 <div class="col-md-4">
                     <a class="btn btn-primary" id="searchButton" name="searchButton" onclick="searchClick()">Search</a>

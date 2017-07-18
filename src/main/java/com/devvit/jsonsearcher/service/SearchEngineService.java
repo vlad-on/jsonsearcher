@@ -11,8 +11,8 @@ import java.util.logging.Logger;
 /**
  * Main search engine methods are stored here
  * Most of the method take toSearch value which is list of words entered by user
- *      and toIgnore - list of words entered by user but with "-" in the beginning
- *      toSearch and toIgnore - Strings of words separated by space
+ * and toIgnore - list of words entered by user but with "-" in the beginning
+ * toSearch and toIgnore - Strings of words separated by space
  * Also they require fullPrLangSet - set of all Programming Languages, it is taken from MainRepository through MainService
  */
 @Service
@@ -37,7 +37,7 @@ public class SearchEngineService {
     //resultSet - Set where matched values to be added
     void addExactMatch(String toSearch, Set<ProgrammingLanguage> resultSet, Set<ProgrammingLanguage> fullPrLangSet) {
         log.info("Entered addExactMatch() for word(s): " + toSearch);
-        if (toSearch.equals("")){
+        if (toSearch.equals("")) {
             log.info(" There is nothing to match.");
             return; //exit method
         }
@@ -124,10 +124,10 @@ public class SearchEngineService {
         List<ProgrammingLanguage> sortedResultList = new ArrayList<>(resultSet);
         switch (sortBy) {
             case 0:
-                sortByName(sortedResultList);
+                sortByRelevance(toSearch, sortedResultList);
                 break;
             case 1:
-                sortByRelevance(toSearch, sortedResultList);
+                sortByName(sortedResultList);
                 break;
         }
         resultSet.clear();

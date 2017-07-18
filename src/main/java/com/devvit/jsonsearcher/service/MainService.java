@@ -42,6 +42,7 @@ public class MainService {
     }
 
     void setSearchAndIgnoreValues(String inputToSearch) {
+        inputToSearch = inputToSearch.replaceAll("%20", " ");
         toSearch = "";
         toIgnore = "";
         String[] s = inputToSearch.split(" ");

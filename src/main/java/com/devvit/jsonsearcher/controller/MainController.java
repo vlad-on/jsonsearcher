@@ -5,8 +5,8 @@ import com.devvit.model.ProgrammingLanguage;
 import com.devvit.model.UIModel;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -32,21 +32,40 @@ public class MainController {
     public @ResponseBody
     ModelAndView getProgLangSearch(@PathVariable String inputToSearch,
                                    @RequestParam(required = false, defaultValue = "1") Integer pageNumber,
-                                   @RequestParam(required = false, defaultValue = "5") Integer pageSize,
-                                   @RequestParam(required = false, defaultValue = "1") Integer sortBy) {
+                                   @RequestParam(required = false, defaultValue = "0") Integer pageSize,
+                                   @RequestParam(required = false, defaultValue = "0") Integer sortBy) {
         log.info("Entered getProgLangSearch() by /ajax/" + inputToSearch + " mapping");
+        inputToSearch = inputToSearch.replaceAll("%2520"," ");
         Set<ProgrammingLanguage> resultSet = mainService.getResultSet(inputToSearch, sortBy);
-        int pageCount = (int) Math.ceil(1.0 * resultSet.size() / pageSize);
+        int pageCount = 1;
+        if (pageSize > 0) {
+            pageCount = (int) Math.ceil(1.0 * resultSet.size() / pageSize);
+        } else {
+            pageSize = resultSet.size();
+        }
+        System.out.println("pageCount="+pageCount+" pageSize="+pageSize+" pageNumber="+pageNumber+" resultSet.size()="+resultSet.size());
         UIModel uiModel = new UIModel();
-//        ServletUriComponentsBuilder builder = ServletUriComponentsBuilder.fromCurrentRequestUri();
-//        builder.scheme("https");
-//        URI newUri = builder.build().toUri();
-        String uri = ServletUriComponentsBuilder.fromCurrentRequestUri().build().toUri().toString().replaceAll("%2520"," ");
-        System.out.println(uri);
-        uiModel.setPreviousUrl(uri);
+//        String uri = ServletUriComponentsBuilder.fromCurrentRequestUri().build().toUri().toString().replaceAll("%2520"," ");
+//        System.out.println(uri);
+//        uiModel.setPreviousUrl(uri);
         uiModel.setPageNumber(pageNumber);
         uiModel.setPagesTotal(pageCount);
-        uiModel.setResultCollection(resultSet);
+        Set limitedRS = limitResultSet(resultSet, pageNumber, pageSize);
+        uiModel.setResultCollection(limitedRS);
         return new ModelAndView("searchresult", "prLanguages", uiModel);
+    }
+
+    private Set<ProgrammingLanguage> limitResultSet(Set<ProgrammingLanguage> resultSet, Integer pageNumber, Integer pageSize) {
+        Set<ProgrammingLanguage> limRS = new LinkedHashSet<>();
+        int i=0;
+        int firstIndex = (pageNumber-1)*pageSize-1;
+        int lastIndex = (pageNumber)*pageSize-1;
+        for (ProgrammingLanguage pl : resultSet){
+            if (i>=firstIndex && i<=lastIndex){
+                limRS.add(pl);
+            }
+            i++;
+        }
+        return limRS;
     }
 }
