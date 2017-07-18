@@ -5,11 +5,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import static org.junit.Assert.assertTrue;
 
+//@RunWith(PowerMockRunner.class)
+//@PrepareForTest(SearchEngineService.class)
 public class SearchEngineServiceTest {
     private SearchEngineService ses = new SearchEngineService();
 
@@ -19,8 +21,8 @@ public class SearchEngineServiceTest {
     private Set<ProgrammingLanguage> fullPrLangSet;
     @Before
     public void setUp() throws Exception {
-        resultSet = new HashSet<>();
-        fullPrLangSet = new HashSet<>();
+        resultSet = new LinkedHashSet<>();
+        fullPrLangSet = new LinkedHashSet<>();
         toSearch = "Java";
         toIgnore = "Script";
 
@@ -123,12 +125,48 @@ public class SearchEngineServiceTest {
     }
 
     @Test
-    public void getSortedResultList() throws Exception {
-
+    public void getSortedResultListVerifyRelatedSortCallTest() throws Exception {
+//        should test private methods
+//        SearchEngineService mockObject = PowerMock.createPartialMock(SearchEngineService.class, "sortByRelevance");
+        int sortBy = 1;
+        ses.getSortedResultList(toSearch, resultSet, sortBy);
+        assertTrue(resultSet.isEmpty());
+//        PowerMock.expectPrivate(mockObject, "sortByRelevance", toSearch, new ArrayList<>());
     }
 
     @Test
-    public void getResultSet() throws Exception {
+    public void getSortedResultListVerifyRelatedSortTest() throws Exception {
+        int sortBy = 1;
+        toSearch = "Microsoft";
+        ses.addExactMatch(toSearch,resultSet,fullPrLangSet);
+        ses.getSortedResultList(toSearch, resultSet, sortBy);
+        assertTrue(resultSet.iterator().next().countWordOccurrences(toSearch)==1);
+        resultSet.clear();
+        toSearch = "Script";
+        ses.addExactMatch(toSearch,resultSet,fullPrLangSet);
+        ses.getSortedResultList(toSearch, resultSet, sortBy);
+        assertTrue(resultSet.iterator().next().countWordOccurrences(toSearch)==2);
+    }
+
+    @Test
+    public void getSortedResultListVerifyNameSortCallTest() throws Exception {
+        int sortBy = 0;
+        ses.getSortedResultList(toSearch, resultSet, sortBy);
+        assertTrue(resultSet.isEmpty());
+    }
+
+    @Test
+    public void getSortedResultListVerifyNameSortTest() throws Exception {
+        int sortBy = 0;
+        toSearch = "Microsoft";
+        ses.addExactMatch(toSearch,resultSet,fullPrLangSet);
+        ses.getSortedResultList(toSearch, resultSet, sortBy);
+        assertTrue(resultSet.iterator().next().getName().equals("C#"));
+        resultSet.clear();
+        toSearch = "Script";
+        ses.addExactMatch(toSearch,resultSet,fullPrLangSet);
+        ses.getSortedResultList(toSearch, resultSet, sortBy);
+        assertTrue(resultSet.iterator().next().getName().equals("JavaScript"));
     }
 
     @After

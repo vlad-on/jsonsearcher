@@ -18,9 +18,6 @@ public class ProgrammingLanguage {
     private String type;
     private String designedBy;
 
-    public ProgrammingLanguage() {
-    }
-
     public ProgrammingLanguage(String name, String type, String designedBy) {
         this.name = name;
         this.type = type;

@@ -113,9 +113,6 @@ public class SearchEngineService {
             //delete results with such words from resultSet
             resultSet.removeAll(plSetToIgnore);
             log.fine(" Excluded all " + plSetToIgnore.size() + " results containing " + toIgnore);
-            log.info(" Excluded all " + plSetToIgnore.size() + " results containing " + toIgnore);
-            log.info(" There are still " + resultSet.size() + " elements in the result list");
-
         } else {
             log.info(" There are no values to ignore, no results excluded");
         }
