@@ -72,13 +72,16 @@ public class SearchEngineServiceTest {
         toSearch = "C# Compiled";
         ses.addWordSwappedMatch(toSearch, resultSet, fullPrLangSet);
         assertTrue(resultSet.size()==1);
+        toSearch = "C Compiled";
+        ses.addWordSwappedMatch(toSearch, resultSet, fullPrLangSet);
+        assertTrue(resultSet.size()==3);
     }
 
     @Test
     public void addWordSwappedMatchNameSwapped2Test() throws Exception {
-        toSearch = "C Compiled";
+        toSearch = "Java Al /fdsfds";
         ses.addWordSwappedMatch(toSearch, resultSet, fullPrLangSet);
-        assertTrue(resultSet.size()==3);
+        assertTrue(resultSet.isEmpty());
     }
 
     @Test

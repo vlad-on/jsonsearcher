@@ -41,7 +41,7 @@ public class MainService {
         return resultSet;
     }
 
-    public void setSearchAndIgnoreValues(String inputToSearch) {
+    void setSearchAndIgnoreValues(String inputToSearch) {
         toSearch = "";
         toIgnore = "";
         String[] s = inputToSearch.split(" ");

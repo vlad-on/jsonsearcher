@@ -68,6 +68,7 @@ public class SearchEngineService {
             addExactMatch(wordsToSearch[0], resultMatchByWordsSet, fullPrLangSet);
             //searches all matches for each word from toSearch string
             for (int i = 1; i < wordsToSearch.length; i++) {
+                matchByWordsSet.clear();
                 //pass to existing match method each word and adds to this new set
                 addExactMatch(wordsToSearch[i], matchByWordsSet, fullPrLangSet);
                 //this method removes all objects from resultMatchByWordsSet that are not in matchByWordsSet
