@@ -29,17 +29,22 @@
             src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 
     <script type="text/javascript">
+        var pageNumber = '';
+        var pageSize = '';
+        var value = '';
         $(document).keypress(function (e) {
             if (e.which == 13) {
                 e.preventDefault();
-                retrievePrLanguages();
+                searchClick();
             }
         });
+        function searchClick() {
+            pageNumber = 1;
+            value = $('#searchValue').val().trim();
+            retrievePrLanguages();
+        }
         function retrievePrLanguages() {
             var url = '/ajax';
-            var value = $('#searchValue').val().trim();
-            var pageNumber = '';//$('#pageNumber').val().trim();
-            var pageSize = '';//$('#pageSize').val().trim();
             if (value != '') {
                 value = encodeURIComponent(value);
                 var uriParams = '';
@@ -53,8 +58,27 @@
             }
             $("#resultsBlock").load(url);
         }
+        function getPreviousPage(pNum) {
+            alert("getPreviousPage called for page " + pNum);
+            pNum = pNum - 1;
+            if (pNum >= 1) {
+                selectPage(pNum);
+            }
+//            var pageSize = $('#pageSize').val().trim();
+        }
+        function selectPage(pNum) {
+//            pageNumber = $('#pageNumber').val().trim();
+            alert("page called " + pNum);
+            pageNumber = pNum;
+        }
+        function getNextPage(pNum, pTotal) {
+            alert("getNextPage called for page" + pNum);
+            pNum = pNum + 1;
+            if (!(pNum > parseInt(pTotal))) {
+                selectPage(pNum);
+            }
+        }
     </script>
-
 </head>
 
 <body>
@@ -104,8 +128,16 @@
     </div>
     <div class="row">
         <div class="col-lg-12">
-            Sort by: <span class="text-primary">Relevance</span>
-            Results per page: <span class="text-primary">All</span>
+            Sort by: <select class="selectpicker text-primary">
+            <option>Relevance</option>
+            <option>Name</option>
+        </select>
+
+            &nbsp;&nbsp;Results per page: <select class="selectpicker text-primary">
+            <option>All</option>
+            <option>5</option>
+            <option>10</option>
+        </select>
         </div>
     </div>
     <hr/>
@@ -118,7 +150,7 @@
                     <input type="text" id="searchValue" name="searchValue" class="form-control"/>
                 </div>
                 <div class="col-md-4">
-                    <a class="btn btn-primary" id="searchButton" name="searchButton" onclick="retrievePrLanguages()">Search</a>
+                    <a class="btn btn-primary" id="searchButton" name="searchButton" onclick="searchClick()">Search</a>
                 </div>
                 <!--<br/>-->
                 <!--<input type="text" id="pageNumber" name="pageNumber"/>-->
@@ -151,5 +183,6 @@
 
 <!-- Bootstrap Core JavaScript -->
 <script src="js/bootstrap.min.js"></script>
+
 </body>
 </html>

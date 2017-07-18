@@ -40,6 +40,12 @@ public class SearchEngineServiceTest {
         fullPrLangSet.add(pl6);
     }
 
+    @After
+    public void tearDown() throws Exception {
+        resultSet.clear();
+        fullPrLangSet.clear();
+    }
+
     @Test
     public void addExactMatchEmptySearchTest() throws Exception {
         toSearch = "";
@@ -170,11 +176,5 @@ public class SearchEngineServiceTest {
         ses.addExactMatch(toSearch,resultSet,fullPrLangSet);
         ses.getSortedResultList(toSearch, resultSet, sortBy);
         assertTrue(resultSet.iterator().next().getName().equals("JavaScript"));
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        resultSet.clear();
-        fullPrLangSet.clear();
     }
 }

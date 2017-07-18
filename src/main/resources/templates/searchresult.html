@@ -8,9 +8,10 @@
 </head>
 <body>
 <h2>Search results:</h2>
+<hr/>
 <div th:fragment="resultsList" th:unless="${#lists.isEmpty(prLanguages.resultCollection)}" class="results-block">
     <table>
-       <tr th:each="prLang : ${prLanguages.resultCollection}">
+        <tr th:each="prLang : ${prLanguages.resultCollection}">
             <td>
                 <div class="row">
                     <div class="col-lg-12">
@@ -21,7 +22,6 @@
                 </div>
             </td>
         </tr>
-        <hr/>
     </table>
 
 </div>
@@ -32,14 +32,14 @@
     <div class="col-lg-12">
         <ul class="pagination">
             <li>
-                <a href="#">&laquo;</a>
+                <a th:onclick="'getPreviousPage('+${prLanguages.pageNumber}+')'">&laquo;</a>
             </li>
             <li th:each="i : ${#numbers.sequence(1, prLanguages.pagesTotal)}"
                 class="" th:classappend="${prLanguages.pageNumber == i}  ? active : ''">
-                <a href="#" th:text="${i}"></a>
+                <a id="pageNumber" name="pageNumber" th:text="${i}" th:onclick="'selectPage('+${i}+')'"></a>
             </li>
             <li>
-                <a href="#">&raquo;</a>
+                <a th:onclick="'getNextPage('+${prLanguages.pageNumber}+', '+${prLanguages.pagesTotal}+')'">&raquo;</a>
             </li>
         </ul>
     </div>

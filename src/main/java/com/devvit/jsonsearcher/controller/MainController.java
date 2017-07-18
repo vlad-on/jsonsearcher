@@ -5,6 +5,7 @@ import com.devvit.model.ProgrammingLanguage;
 import com.devvit.model.UIModel;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.Set;
 import java.util.logging.Logger;
@@ -37,6 +38,12 @@ public class MainController {
         Set<ProgrammingLanguage> resultSet = mainService.getResultSet(inputToSearch, sortBy);
         int pageCount = (int) Math.ceil(1.0 * resultSet.size() / pageSize);
         UIModel uiModel = new UIModel();
+//        ServletUriComponentsBuilder builder = ServletUriComponentsBuilder.fromCurrentRequestUri();
+//        builder.scheme("https");
+//        URI newUri = builder.build().toUri();
+        String uri = ServletUriComponentsBuilder.fromCurrentRequestUri().build().toUri().toString().replaceAll("%2520"," ");
+        System.out.println(uri);
+        uiModel.setPreviousUrl(uri);
         uiModel.setPageNumber(pageNumber);
         uiModel.setPagesTotal(pageCount);
         uiModel.setResultCollection(resultSet);
