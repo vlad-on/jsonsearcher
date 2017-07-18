@@ -84,6 +84,7 @@ public class SearchEngineService {
         }
     }
 
+    //is meant to be used after exact and swapped match methods
     //if toSearch contains word scriprting - change it to script and use addWordSwappedMatch(...)
     void addRelatedScriptingLanguages(String toSearch, Set<ProgrammingLanguage> resultSet, Set<ProgrammingLanguage> fullPrLangSet) {
         log.info("Entered addRelatedScriptingLanguages for word(s): " + toSearch);

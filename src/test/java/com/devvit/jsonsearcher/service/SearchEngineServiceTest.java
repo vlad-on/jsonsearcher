@@ -101,11 +101,30 @@ public class SearchEngineServiceTest {
     }
 
     @Test
-    public void excludeValuesWithMinus() throws Exception {
+    public void excludeValuesWithMinusNoIgnoreTest() throws Exception {
+        toIgnore = "";
+        ses.excludeValuesWithMinus(toIgnore, resultSet, fullPrLangSet);
+        assertTrue(resultSet.size()==0);
+    }
+
+    @Test
+    public void excludeValuesWithMinusNoIgnore2Test() throws Exception {
+        toIgnore = "";
+        ses.addExactMatch(toSearch, resultSet, fullPrLangSet);
+        ses.excludeValuesWithMinus(toIgnore, resultSet, fullPrLangSet);
+        assertTrue(resultSet.size()==2);
+    }
+
+    @Test
+    public void excludeValuesWithMinus1WordTest() throws Exception {
+        ses.addExactMatch(toSearch, resultSet, fullPrLangSet);
+        ses.excludeValuesWithMinus(toIgnore, resultSet, fullPrLangSet);
+        assertTrue(resultSet.size()==1);
     }
 
     @Test
     public void getSortedResultList() throws Exception {
+
     }
 
     @Test
