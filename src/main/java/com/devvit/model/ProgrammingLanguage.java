@@ -46,9 +46,6 @@ public class ProgrammingLanguage {
     }
 
     public boolean contains(String str) {
-//        return getName().toLowerCase().contains(str.toLowerCase())
-//                || getType().toLowerCase().contains(str.toLowerCase())
-//                || getDesignedBy().toLowerCase().contains(str.toLowerCase());
         return containsIgnoreCase(getName(), str)
                 || containsIgnoreCase(getType(), str)
                 || containsIgnoreCase(getDesignedBy(), str);
@@ -56,13 +53,10 @@ public class ProgrammingLanguage {
 
     public int countWordOccurrences(String str) {
         String fullPL = this.toString().toLowerCase();
-//        log.info("fullPL="+fullPL);
         int occur = 0;
         String[] s = str.split(" ");
         for (String word: s) {
-//            log.info("word="+word);
             occur = occur + StringUtils.countOccurrencesOf(fullPL,word.toLowerCase());
-//            log.info("StringUtils.countOccurrencesOf(fullPL,"+word+")="+occur);
         }
         log.info("for lang "+ getName() + " number occurrences = "+occur);
         return occur;
