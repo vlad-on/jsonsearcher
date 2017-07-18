@@ -1,10 +1,10 @@
 package com.devvit.jsonsearcher.service;
 
 import com.devvit.jsonsearcher.controller.MainController;
+import com.devvit.model.PrLangByNameComparer;
 import com.devvit.model.ProgrammingLanguage;
 import org.springframework.stereotype.Service;
 
-import java.text.Collator;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -21,16 +21,16 @@ public class SearchEngineService {
     private static Logger log = Logger.getLogger(MainController.class.getName());
 
     private void sortByRelevance(String toSearch, List<ProgrammingLanguage> sortedResultList) {
-        log.info("Entered sortByRelevance with for word(s):" + toSearch);
+        log.info("Entered sortByRelevance for word(s):" + toSearch);
         sortedResultList.sort((a, b) -> a.countWordOccurrences(toSearch) > b.countWordOccurrences(toSearch) ? -1 :
                 a.countWordOccurrences(toSearch) == b.countWordOccurrences(toSearch) ? 0 : 1);
-        log.fine("List sorted by word relevance");
+        log.fine(" List sorted by word relevance");
     }
 
-    private void sortByName(String toSearch, List<ProgrammingLanguage> sortedResultList) {
-        log.info("Entered sortByName with for word(s):" + toSearch);
-        sortedResultList.sort(Collator.getInstance());
-        log.fine("List sorted by PL names");
+    private void sortByName(List<ProgrammingLanguage> sortedResultList) {
+        log.info("Entered sortByName");
+        sortedResultList.sort(new PrLangByNameComparer());
+        log.fine(" List sorted by PL names");
     }
 
     //toSearch - value to be match with,
@@ -44,7 +44,7 @@ public class SearchEngineService {
         for (ProgrammingLanguage elem : fullPrLangSet) {
             if (elem.contains(toSearch)) {
                 resultSet.add(elem);
-                log.fine("  added " + elem.getName());
+                log.fine(" 8885 added " + elem.getName());
             }
         }
         log.info(" In general there are " + resultSet.size() + " elements in the set");
@@ -125,7 +125,7 @@ public class SearchEngineService {
         List<ProgrammingLanguage> sortedResultList = new ArrayList<>(resultSet);
         switch (sortBy) {
             case 0:
-                sortByName(toSearch, sortedResultList);
+                sortByName(sortedResultList);
                 break;
             case 1:
                 sortByRelevance(toSearch, sortedResultList);
