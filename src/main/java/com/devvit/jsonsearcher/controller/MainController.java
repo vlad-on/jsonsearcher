@@ -54,10 +54,10 @@ public class MainController {
     private Set<ProgrammingLanguage> limitResultSet(Set<ProgrammingLanguage> resultSet, Integer pageNumber, Integer pageSize) {
         Set<ProgrammingLanguage> limRS = new LinkedHashSet<>();
         int i=0;
-        int firstIndex = (pageNumber-1)*pageSize-1;
+        int firstIndex = (pageNumber-1)*pageSize;
         int lastIndex = (pageNumber)*pageSize-1;
         for (ProgrammingLanguage pl : resultSet){
-            if (i>=firstIndex && i<=lastIndex){
+            if (i>=firstIndex && i<lastIndex){
                 limRS.add(pl);
             }
             i++;
