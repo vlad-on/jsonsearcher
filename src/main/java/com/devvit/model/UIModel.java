@@ -9,8 +9,6 @@ public class UIModel {
     private Collection<ProgrammingLanguage> resultCollection;
     private int pagesTotal;
     private int pageNumber;
-    private int elementsPerPage;
-    private String previousUrl;
 
     public Collection<ProgrammingLanguage> getResultCollection() {
         return resultCollection;
@@ -34,21 +32,5 @@ public class UIModel {
 
     public void setPageNumber(int pageNumber) {
         this.pageNumber = pageNumber;
-    }
-
-    public String getPreviousUrl() {
-        return previousUrl;
-    }
-
-    public void setPreviousUrl(String previousUrl) {
-        this.previousUrl = previousUrl;
-    }
-
-    public int getElementsPerPage() {
-        return elementsPerPage;
-    }
-
-    public void setElementsPerPage(int elementsPerPage) {
-        this.elementsPerPage = elementsPerPage;
     }
 }

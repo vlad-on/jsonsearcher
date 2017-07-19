@@ -35,7 +35,6 @@ public class MainController {
                                    @RequestParam(required = false, defaultValue = "0") Integer pageSize,
                                    @RequestParam(required = false, defaultValue = "0") Integer sortBy) {
         log.info("Entered getProgLangSearch() by /ajax/" + inputToSearch + " mapping");
-        inputToSearch = inputToSearch.replaceAll("%2520"," ");
         Set<ProgrammingLanguage> resultSet = mainService.getResultSet(inputToSearch, sortBy);
         int pageCount = 1;
         if (pageSize > 0) {
@@ -45,9 +44,6 @@ public class MainController {
         }
         System.out.println("pageCount="+pageCount+" pageSize="+pageSize+" pageNumber="+pageNumber+" resultSet.size()="+resultSet.size());
         UIModel uiModel = new UIModel();
-//        String uri = ServletUriComponentsBuilder.fromCurrentRequestUri().build().toUri().toString().replaceAll("%2520"," ");
-//        System.out.println(uri);
-//        uiModel.setPreviousUrl(uri);
         uiModel.setPageNumber(pageNumber);
         uiModel.setPagesTotal(pageCount);
         Set limitedRS = limitResultSet(resultSet, pageNumber, pageSize);
