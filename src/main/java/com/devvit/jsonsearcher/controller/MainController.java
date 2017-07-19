@@ -57,7 +57,7 @@ public class MainController {
         int firstIndex = (pageNumber-1)*pageSize;
         int lastIndex = (pageNumber)*pageSize-1;
         for (ProgrammingLanguage pl : resultSet){
-            if (i>=firstIndex && i<lastIndex){
+            if (i>=firstIndex && i<=lastIndex){
                 limRS.add(pl);
             }
             i++;
