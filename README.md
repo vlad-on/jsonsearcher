@@ -1,5 +1,5 @@
 # JsonSearcher
-<p>Web page which allow to search programming languages from Json file called data.json.</p>
+<p>A web server with a web page which allow to search programming languages from Json file called data.json.</p>
 <h3>How to start:</h3>
 <p>Clone the source code from github, update all needed maven dependencies and start main method from JsonSearcherApplication class.</p>
 <p>As this code uses Spring Bootstrap it starts Tomcat 8 on home page http://localhost:8080/ out of the box. It also can be modified to get jar/war file to upload it on a remote server.</p>
